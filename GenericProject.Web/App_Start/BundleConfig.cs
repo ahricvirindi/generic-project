@@ -55,13 +55,11 @@ namespace GenericProject.Web
 
             #region Style bundles
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/main.css"
+            bundles.Add(new StyleBundle("~/Content/main/css").Include(
+                "~/Content/less/main.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/app-lib-css").Include(
-                "~/Content/bootstrap.css",
-                "~/Content/bootstrap-theme.css",
                 "~/Scripts/lib/pines-notify/jquery.pnotify.default.css",
                 "~/Scripts/lib/pines-notify/jquery.pnotify.default.icons.css"
                 ));

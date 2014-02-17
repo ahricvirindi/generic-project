@@ -1,5 +1,5 @@
 'use strict';
 
 angular.module('GenericApp')
-  .controller('MainController', function ($scope) {
-  });
+  .controller('MainController', [function ($scope) {
+  }]);

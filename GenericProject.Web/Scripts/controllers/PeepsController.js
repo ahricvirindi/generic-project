@@ -1,14 +1,37 @@
 ﻿'use strict';
 
 angular.module('GenericApp')
-    .controller('PeepsController', ['$scope', 'Api', '$routeParams', '$location', function ($scope, Api, $routeParams, $location) {
-        $scope.CurrentPage = 0;
-        $scope.PaginationState = { Items: [], PaginationRequest: { PageSize: 20, PageNumber: 1, OrderBy: null }, FilterArgs: {}, PageCount: 1, TotalCount: 0, PageSize: 20 };
+    .controller('PeepsController', ['$scope', 'Api', '$routeParams', '$location', '$log',
+        function ($scope, Api, $routeParams, $location, $log) {
+            $scope.CurrentPage = $routeParams.page;
+        $scope.PaginationState = {
+            Items: [],
+            PaginationRequest: {
+                PageSize: 20,
+                PageNumber: 1,
+                OrderBy: null
+            },
+            FilterArgs: {},
+            PageCount: 1,
+            TotalCount: 0,
+            PageSize: 20
+        };
         $scope.PeepFilter = { Search: $routeParams.search, ZipCode: $routeParams.zipCode };
         $scope.OrderBy = $routeParams.orderBy;
+        $scope.Ascending = ($scope.OrderBy || '').match(/ASC/);
+
+        $log.info($routeParams);
 
         var buildPaginationRequest = function () {
-            var req = { 'FilterArgs[0].Key': 'Search', 'FilterArgs[0].Value': $scope.PeepFilter.Search, 'FilterArgs[1].Key': 'ZipCode', 'FilterArgs[1].Value': $scope.PeepFilter.ZipCode, PageSize: 5, PageNumber: $scope.CurrentPage, OrderBy: $scope.OrderBy };
+            var req = {
+                'FilterArgs[0].Key': 'Search',
+                'FilterArgs[0].Value': $scope.PeepFilter.Search,
+                'FilterArgs[1].Key': 'ZipCode',
+                'FilterArgs[1].Value': $scope.PeepFilter.ZipCode,
+                PageSize: 5,
+                PageNumber: $scope.CurrentPage,
+                OrderBy: $scope.OrderBy
+            };
             return req;
         };
 
@@ -22,34 +45,29 @@ angular.module('GenericApp')
             $scope.refreshData();
         };
 
-        $scope.orderBy = function (orderByCol) {
-            alert(orderByCol);
-        };
-
         $scope.refreshData = function () {
-            $scope.PaginationState = api.paginate(buildPaginationRequest(), function () { }, function () { });
+            $scope.PaginationState = api.paginate(buildPaginationRequest(), function (results) {
+                $log.info(results);
+            }, function () { });
         };
 
         $scope.$watch('CurrentPage',
         function (newValue, oldValue) {
-            if (newValue == oldValue) return;
+            if (!newValue || newValue === oldValue) return;
             $location.search('page', $scope.CurrentPage);
             $scope.refreshData();
         }, true);
 
 
-        //$scope.$watch('OrderBy',
-        //function (newValue, oldValue) {
-        //    if (newValue == oldValue) {
-        //        if (newValue.lastIndexOf('-desc') < 0) {
-        //            newValue = newValue + '-desc';
-        //        } else {
-        //            newValue = newValue.replace('-desc', '');
-        //        }
-        //    }
-        //    $location.search('orderBy', $scope.OrderBy);
-        //    $scope.refreshData();
-        //}, true);
+       $scope.$watch('OrderBy',
+       function (newValue, oldValue) {
+           if (!newValue || newValue === oldValue) {
+               return;
+           }
+           $log.info(newValue, oldValue);
+           $location.search('orderBy', $scope.OrderBy);
+           $scope.refreshData();
+       }, true);
 
 
         var api = new Api({ service: 'Peeps' });

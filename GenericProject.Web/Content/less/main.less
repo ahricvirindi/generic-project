@@ -1,4 +1,6 @@
-﻿body
+﻿@import "bootstrap/bootstrap.less";
+
+body
 {
     padding-top: 70px;
     padding-bottom: 30px;
@@ -34,4 +36,24 @@
     top: 0;
     left: 0;
     z-index: 9999;
+}
+
+table th.btn{
+    display: table-cell;
+}
+
+table th.btn i {
+    padding-left: 5px;
+}
+
+table th.btn.ordered i {
+    &:before { content: "\e113"; }
+}
+
+table th.btn.ordered-desc i {
+    &:before { content: "\e114"; }
+}
+
+.pagination {
+    cursor: pointer;
 }
