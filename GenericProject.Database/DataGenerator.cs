@@ -83,11 +83,21 @@ namespace GenericProject.Database
 
 
         // TODO: get a better source than this, or at least relative pathing
+        // 
+        // the entire dataset is not in the json in intentionally, as this is
+        // just working with different sources for different parts of the data
         public IEnumerable<Peep> LoadPeeps()
         {
             if (_peeps != null) return _peeps;
             var json = System.IO.File.ReadAllText(@"C:\SRC\GenericProject\GenericProject.Database\fakePeeps.json");
             _peeps = JsonConvert.DeserializeObject<List<Peep>>(json);
+
+            // just for fun, some randomness
+            var rand = new Random();
+            var bDayStart = new DateTime(1950, 1, 1);
+            var bDayRange = (new DateTime(2000, 1, 1) - bDayStart).Days;
+            _peeps.ForEach(x => { x.HatsOwned = rand.Next(0, 117); if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); });
+
             return _peeps;
         }
 

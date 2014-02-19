@@ -16,5 +16,7 @@ namespace GenericProject.Core.Model
         [Required]
         public string ZipCode { get; set; }
         public string Note { get; set; }
+        public int HatsOwned { get; set; }
+        public DateTime? Birthday { get; set; }
     }
 }
