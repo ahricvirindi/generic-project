@@ -44,6 +44,11 @@ namespace GenericProject.Core.Data
             return enumerable.ElementAt(index);
         }
 
+        public static IEnumerable<T> SelectRandom<T>(this IEnumerable<T> enumerable, int count)
+        {
+            return enumerable.OrderByRandom().Take(count);
+        }
+
         public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> enumerable) { return enumerable.OrderBy(o => rand.Next()); }
     }
 }
