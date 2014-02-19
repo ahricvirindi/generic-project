@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GenericProject.Core.Model
 {
-    public class Peep : ModelBase
+    public class Peep : AuditedModel
     {
         [Required]
         public string Name { get; set; }
@@ -18,5 +18,7 @@ namespace GenericProject.Core.Model
         public string Note { get; set; }
         public int HatsOwned { get; set; }
         public DateTime? Birthday { get; set; }
+
+        public Relation Relation { get; set; }
     }
 }

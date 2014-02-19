@@ -15,6 +15,8 @@ namespace GenericProject.Database
 
         private IEnumerable<Role> _roles;
 
+        private IEnumerable<Relation> _relations;
+
         private IEnumerable<Peep> _peeps;
 
         public DataGenerator(IRepositoryFactory repositoryFactory) { _repositoryFactory = repositoryFactory; }
@@ -82,12 +84,32 @@ namespace GenericProject.Database
         }
 
 
+        private IEnumerable<Relation> LoadRelations()
+        {
+            return _relations ?? (_relations = new[] {
+                                                 new Relation { Name = "Friend" },
+                                                 new Relation { Name = "Co-Worker" },
+                                                 new Relation { Name = "Acquaintance" },
+                                                 new Relation { Name = "Enemy" },
+                                                 new Relation { Name = "Family" },
+                                                 new Relation { Name = "Stranger" },
+                                             });
+        }
+
+        public void GenerateRelations()
+        {
+            var repo = _repositoryFactory.GetRepository<Relation>();
+            LoadRelations().ForEach(repo.Add);
+        }
+
+
         // TODO: get a better source than this, or at least relative pathing
         // 
         // the entire dataset is not in the json in intentionally, as this is
         // just working with different sources for different parts of the data
         public IEnumerable<Peep> LoadPeeps()
         {
+            LoadRelations();
             if (_peeps != null) return _peeps;
             var json = System.IO.File.ReadAllText(@"C:\SRC\GenericProject\GenericProject.Database\fakePeeps.json");
             _peeps = JsonConvert.DeserializeObject<List<Peep>>(json);
@@ -96,7 +118,11 @@ namespace GenericProject.Database
             var rand = new Random();
             var bDayStart = new DateTime(1950, 1, 1);
             var bDayRange = (new DateTime(2000, 1, 1) - bDayStart).Days;
-            _peeps.ForEach(x => { x.HatsOwned = rand.Next(0, 117); if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); });
+            _peeps.ForEach(x => { 
+                x.HatsOwned = rand.Next(0, 117); 
+                if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); 
+                x.Relation = _relations.SelectRandom();
+            });
 
             return _peeps;
         }

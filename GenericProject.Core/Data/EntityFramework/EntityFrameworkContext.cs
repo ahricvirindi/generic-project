@@ -17,6 +17,7 @@ namespace GenericProject.Core.Data.EntityFramework
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Relation> Relations { get; set; }
         public DbSet<Peep> Peeps { get; set; }
 
         public static EntityFrameworkContext Instance { get { return (EntityFrameworkContext)Injector.Get<DbContext>(); } }

@@ -27,6 +27,7 @@ namespace GenericProject.Database
 
             generator.GenerateRoles();
             generator.GenerateUsers();
+            generator.GenerateRelations();
             generator.GeneratePeeps();
 
             unitOfWork.SubmitChanges();

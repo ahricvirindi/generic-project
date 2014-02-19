@@ -141,6 +141,7 @@
     <Compile Include="Model\Peep.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\PagedEnumerable.cs" />
+    <Compile Include="Model\Relation.cs" />
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
