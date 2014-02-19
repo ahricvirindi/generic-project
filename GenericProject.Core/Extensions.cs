@@ -7,6 +7,8 @@ namespace GenericProject.Core.Data
 {
     public static class Extensions
     {
+        private static Random rand = new Random();
+
         public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {
             foreach (var item in items)
@@ -35,5 +37,13 @@ namespace GenericProject.Core.Data
         /// <param name="source">Source object(s) to copy from</param>
         /// <returns>Updated target</returns>
         public static T InjectFrom<T>(this T target, params object[] source) { return (T)StaticValueInjecter.InjectFrom(target, source); }
+
+        public static T SelectRandom<T>(this IEnumerable<T> enumerable)
+        {
+            var index = rand.Next(0, enumerable.Count() - 1);
+            return enumerable.ElementAt(index);
+        }
+
+        public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> enumerable) { return enumerable.OrderBy(o => rand.Next()); }
     }
 }
