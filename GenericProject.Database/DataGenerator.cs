@@ -19,6 +19,8 @@ namespace GenericProject.Database
 
         private IEnumerable<Tag> _tags;
 
+        private IEnumerable<Title> _titles;
+
         private IEnumerable<Peep> _peeps;
 
         public DataGenerator(IRepositoryFactory repositoryFactory) { _repositoryFactory = repositoryFactory; }
@@ -118,6 +120,29 @@ namespace GenericProject.Database
                                              });
         }
 
+
+        public void GenerateTitles()
+        {
+            var repo = _repositoryFactory.GetRepository<Title>();
+            LoadTitles().ForEach(repo.Add);
+        }
+
+        private IEnumerable<Title> LoadTitles()
+        {
+            return _titles ?? (_titles = new[] {
+                                                 new Title { Name = "Mr." },
+                                                 new Title { Name = "Mrs." },
+                                                 new Title { Name = "MIss" },
+                                                 new Title { Name = "Lord" },
+                                                 new Title { Name = "Lady" },
+                                                 new Title { Name = "Duke" },
+                                                 new Title { Name = "Duchess" },
+                                                 new Title { Name = "Spymaster" },
+                                                 new Title { Name = "Supereme Overlord" },
+                                             });
+        }
+
+
         public void GenerateRelations()
         {
             var repo = _repositoryFactory.GetRepository<Relation>();
@@ -151,6 +176,9 @@ namespace GenericProject.Database
 
                 randCount = rand.Next(0, _tags.Count() - 1);
                 if (randCount > 0) x.Tags = _tags.SelectRandom(randCount).ToList();
+
+                randCount = rand.Next(0, _titles.Count() - 1);
+                if (randCount > 0) x.Title = _titles.SelectRandom();
             });
 
             return _peeps;

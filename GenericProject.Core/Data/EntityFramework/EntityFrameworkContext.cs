@@ -19,6 +19,8 @@ namespace GenericProject.Core.Data.EntityFramework
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Title> Titles { get; set; }
+
         public DbSet<Relation> Relations { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
