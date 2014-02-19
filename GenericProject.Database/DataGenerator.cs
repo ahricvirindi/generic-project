@@ -121,7 +121,8 @@ namespace GenericProject.Database
             _peeps.ForEach(x => { 
                 x.HatsOwned = rand.Next(0, 117); 
                 if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); 
-                x.Relation = _relations.SelectRandom();
+                var relations = rand.Next(0, _relations.Count() - 1);
+                if (relations > 0) x.Relations = _relations.SelectRandom(relations).ToList();
             });
 
             return _peeps;

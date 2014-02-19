@@ -19,6 +19,6 @@ namespace GenericProject.Core.Model
         public int HatsOwned { get; set; }
         public DateTime? Birthday { get; set; }
 
-        public Relation Relation { get; set; }
+        public ICollection<Relation> Relations { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace GenericProject.Core.Model
 {
     public class Relation : LookupModel
     {
+        public IList<Peep> Peeps { get; set; }
     }
 }
