@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GenericProject.Core.Data;
 using GenericProject.Core.Model;
@@ -21,7 +22,16 @@ namespace GenericProject.Database
 
         private IEnumerable<Title> _titles;
 
+        private IEnumerable<State> _states;
+
+        private IEnumerable<AddressType> _addressTypes;
+
         private IEnumerable<Peep> _peeps;
+
+        private IEnumerable<string> _cities;
+
+        private IEnumerable<string> _streets;
+
 
         public DataGenerator(IRepositoryFactory repositoryFactory) { _repositoryFactory = repositoryFactory; }
 
@@ -91,13 +101,13 @@ namespace GenericProject.Database
         private IEnumerable<Relation> LoadRelations()
         {
             return _relations ?? (_relations = new[] {
-                                                 new Relation { Name = "Friend" },
-                                                 new Relation { Name = "Co-Worker" },
-                                                 new Relation { Name = "Acquaintance" },
-                                                 new Relation { Name = "Enemy" },
-                                                 new Relation { Name = "Family" },
-                                                 new Relation { Name = "Stranger" },
-                                             });
+                                                         new Relation { Name = "Friend" },
+                                                         new Relation { Name = "Co-Worker" },
+                                                         new Relation { Name = "Acquaintance" },
+                                                         new Relation { Name = "Enemy" },
+                                                         new Relation { Name = "Family" },
+                                                         new Relation { Name = "Stranger" },
+                                                     });
         }
 
         public void GenerateTags()
@@ -109,15 +119,51 @@ namespace GenericProject.Database
         private IEnumerable<Tag> LoadTags()
         {
             return _tags ?? (_tags = new[] {
-                                                 new Tag { Name = "Lazy" },
-                                                 new Tag { Name = "Sneezes Funny" },
-                                                 new Tag { Name = "Eats Crayons" },
-                                                 new Tag { Name = "Dead Eyes" },
-                                                 new Tag { Name = "Sarcastic" },
-                                                 new Tag { Name = "Way Too Happy" },
-                                                 new Tag { Name = "Bi-Polar" },
-                                                 new Tag { Name = "Diabetic" },
-                                             });
+                                               new Tag { Name = "Lazy" },
+                                               new Tag { Name = "Sneezes Funny" },
+                                               new Tag { Name = "Eats Crayons" },
+                                               new Tag { Name = "Dead Eyes" },
+                                               new Tag { Name = "Sarcastic" },
+                                               new Tag { Name = "Way Too Happy" },
+                                               new Tag { Name = "Bi-Polar" },
+                                               new Tag { Name = "Diabetic" },
+                                           });
+        }
+
+
+        public void GenerateStates()
+        {
+            var repo = _repositoryFactory.GetRepository<State>();
+            LoadStates().ForEach(repo.Add);
+        }
+
+        private IEnumerable<State> LoadStates()
+        {
+            return _states ?? (_states = new[] {
+                                                   new State { Abbreviation = "AK", Name = "Alaska" },
+                                                   new State { Abbreviation = "KS", Name = "Kansas" },
+                                                   new State { Abbreviation = "MN", Name = "Minnesota" },
+                                                   new State { Abbreviation = "MO", Name = "Missouri" },
+                                                   new State { Abbreviation = "WY", Name = "Wyoming" },
+                                               });
+        }
+
+
+        public void GenerateAddressTypes()
+        {
+            var repo = _repositoryFactory.GetRepository<AddressType>();
+            LoadAddressTypes().ForEach(repo.Add);
+        }
+
+        private IEnumerable<AddressType> LoadAddressTypes()
+        {
+            return _addressTypes ?? (_addressTypes = new[] {
+                                                               new AddressType { Name = "Home" },
+                                                               new AddressType { Name = "Work" },
+                                                               new AddressType { Name = "Mistress" },
+                                                               new AddressType { Name = "Vacation Villa" },
+                                                               new AddressType { Name = "Secret Treehouse" },
+                                                           });
         }
 
 
@@ -130,16 +176,42 @@ namespace GenericProject.Database
         private IEnumerable<Title> LoadTitles()
         {
             return _titles ?? (_titles = new[] {
-                                                 new Title { Name = "Mr." },
-                                                 new Title { Name = "Mrs." },
-                                                 new Title { Name = "MIss" },
-                                                 new Title { Name = "Lord" },
-                                                 new Title { Name = "Lady" },
-                                                 new Title { Name = "Duke" },
-                                                 new Title { Name = "Duchess" },
-                                                 new Title { Name = "Spymaster" },
-                                                 new Title { Name = "Supereme Overlord" },
-                                             });
+                                                   new Title { Name = "Mr." },
+                                                   new Title { Name = "Mrs." },
+                                                   new Title { Name = "MIss" },
+                                                   new Title { Name = "Lord" },
+                                                   new Title { Name = "Lady" },
+                                                   new Title { Name = "Duke" },
+                                                   new Title { Name = "Duchess" },
+                                                   new Title { Name = "Spymaster" },
+                                                   new Title { Name = "Supereme Overlord" },
+                                               });
+        }
+
+
+        private IEnumerable<string> LoadStreets()
+        {
+            return _streets ?? (_streets = new List<string>() {
+                                                                "Main St.",
+                                                                "Elm Blvd.",
+                                                                "Jump St.",
+                                                                "Broken Dreams Blvd.",
+                                                                "Singularity Lane",
+                                                                "Caustic Bypass",
+                                                                "Persistent Delusion"
+                                                            });
+        }
+
+
+        private IEnumerable<string> LoadCities() { 
+            return _cities ?? (_cities = new List<string>() { 
+                                                              "Estonia", 
+                                                              "Suburbia", 
+                                                              "Danger Zone", 
+                                                              "100 Acre Woods", 
+                                                              "Hyrle", 
+                                                              "South Figaro", 
+                                                              "Zozo" }); 
         }
 
 
@@ -157,6 +229,10 @@ namespace GenericProject.Database
         {
             LoadRelations();
             LoadTags();
+            LoadAddressTypes();
+            LoadCities();
+            LoadStreets();
+            LoadStates();
 
             if (_peeps != null) return _peeps;
 
@@ -167,19 +243,38 @@ namespace GenericProject.Database
             var rand = new Random();
             var bDayStart = new DateTime(1950, 1, 1);
             var bDayRange = (new DateTime(2000, 1, 1) - bDayStart).Days;
-            _peeps.ForEach(x => { 
-                x.HatsOwned = rand.Next(0, 117); 
-                if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); 
+            _peeps.ForEach(x =>
+                               {
+                                   x.HatsOwned = rand.Next(0, 117);
+                                   if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange));
 
-                var randCount = rand.Next(0, _relations.Count() - 1);
-                if (randCount > 0) x.Relations = _relations.SelectRandom(randCount).ToList();
+                                   var randCount = rand.Next(0, _relations.Count() - 1);
+                                   if (randCount > 0) x.Relations = _relations.SelectRandom(randCount).ToList();
 
-                randCount = rand.Next(0, _tags.Count() - 1);
-                if (randCount > 0) x.Tags = _tags.SelectRandom(randCount).ToList();
+                                   randCount = rand.Next(0, _tags.Count() - 1);
+                                   if (randCount > 0) x.Tags = _tags.SelectRandom(randCount).ToList();
 
-                randCount = rand.Next(0, _titles.Count() - 1);
-                if (randCount > 0) x.Title = _titles.SelectRandom();
-            });
+                                   randCount = rand.Next(0, _titles.Count() - 1);
+                                   if (randCount > 0) x.Title = _titles.SelectRandom();
+
+                                   randCount = rand.Next(0, _addressTypes.Count() - 1);
+                                   if (randCount > 0)
+                                   {
+                                       x.Addresses = new Collection<Address>();
+                                       for (var i = 1; i <= randCount; i++)
+                                       {
+                                           x.Addresses.Add(new Address() {
+                                                                             Line1 = String.Format("{0} {1}", rand.Next(100, 5000), _streets.SelectRandom()),
+                                                                             Line2 =
+                                                                                 (rand.Next(1, 100) % 3 == 0) ? "" : String.Format("Apt. {0}", rand.Next(1, 23)),
+                                                                             City = _cities.SelectRandom(),
+                                                                             AddressType = _addressTypes.SelectRandom(),
+                                                                             State = _states.SelectRandom(),
+                                                                             ZipCode = String.Format("{0}", rand.Next(11111, 99999))
+                                                                         });
+                                       }
+                                   }
+                               });
 
             return _peeps;
         }

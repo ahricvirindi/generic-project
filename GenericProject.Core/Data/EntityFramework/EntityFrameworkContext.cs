@@ -27,6 +27,12 @@ namespace GenericProject.Core.Data.EntityFramework
 
         public DbSet<Peep> Peeps { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<AddressType> AddressTypes { get; set; }
+
+        public DbSet<State> States { get; set; }
+
         public static EntityFrameworkContext Instance { get { return (EntityFrameworkContext)Injector.Get<DbContext>(); } }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -26,5 +26,6 @@ namespace GenericProject.Core.Model
 
         public ICollection<Relation> Relations { get; set; }
         public ICollection<Tag> Tags { get; set; }
+        public ICollection<Address> Addresses { get; set; }
     }
 }
