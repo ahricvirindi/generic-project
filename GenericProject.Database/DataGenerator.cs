@@ -17,6 +17,8 @@ namespace GenericProject.Database
 
         private IEnumerable<Relation> _relations;
 
+        private IEnumerable<Tag> _tags;
+
         private IEnumerable<Peep> _peeps;
 
         public DataGenerator(IRepositoryFactory repositoryFactory) { _repositoryFactory = repositoryFactory; }
@@ -96,12 +98,31 @@ namespace GenericProject.Database
                                              });
         }
 
+        public void GenerateTags()
+        {
+            var repo = _repositoryFactory.GetRepository<Tag>();
+            LoadTags().ForEach(repo.Add);
+        }
+
+        private IEnumerable<Tag> LoadTags()
+        {
+            return _tags ?? (_tags = new[] {
+                                                 new Tag { Name = "Lazy" },
+                                                 new Tag { Name = "Sneezes Funny" },
+                                                 new Tag { Name = "Eats Crayons" },
+                                                 new Tag { Name = "Dead Eyes" },
+                                                 new Tag { Name = "Sarcastic" },
+                                                 new Tag { Name = "Way Too Happy" },
+                                                 new Tag { Name = "Bi-Polar" },
+                                                 new Tag { Name = "Diabetic" },
+                                             });
+        }
+
         public void GenerateRelations()
         {
             var repo = _repositoryFactory.GetRepository<Relation>();
             LoadRelations().ForEach(repo.Add);
         }
-
 
         // TODO: get a better source than this, or at least relative pathing
         // 
@@ -110,7 +131,10 @@ namespace GenericProject.Database
         public IEnumerable<Peep> LoadPeeps()
         {
             LoadRelations();
+            LoadTags();
+
             if (_peeps != null) return _peeps;
+
             var json = System.IO.File.ReadAllText(@"C:\SRC\GenericProject\GenericProject.Database\fakePeeps.json");
             _peeps = JsonConvert.DeserializeObject<List<Peep>>(json);
 
@@ -121,8 +145,12 @@ namespace GenericProject.Database
             _peeps.ForEach(x => { 
                 x.HatsOwned = rand.Next(0, 117); 
                 if (x.HatsOwned % 3 != 0) x.Birthday = bDayStart.AddDays(rand.Next(bDayRange)); 
-                var relations = rand.Next(0, _relations.Count() - 1);
-                if (relations > 0) x.Relations = _relations.SelectRandom(relations).ToList();
+
+                var randCount = rand.Next(0, _relations.Count() - 1);
+                if (randCount > 0) x.Relations = _relations.SelectRandom(randCount).ToList();
+
+                randCount = rand.Next(0, _tags.Count() - 1);
+                if (randCount > 0) x.Tags = _tags.SelectRandom(randCount).ToList();
             });
 
             return _peeps;

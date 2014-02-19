@@ -20,5 +20,6 @@ namespace GenericProject.Core.Model
         public DateTime? Birthday { get; set; }
 
         public ICollection<Relation> Relations { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }

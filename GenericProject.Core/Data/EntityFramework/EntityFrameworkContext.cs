@@ -21,6 +21,8 @@ namespace GenericProject.Core.Data.EntityFramework
 
         public DbSet<Relation> Relations { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
         public DbSet<Peep> Peeps { get; set; }
 
         public static EntityFrameworkContext Instance { get { return (EntityFrameworkContext)Injector.Get<DbContext>(); } }
@@ -32,6 +34,11 @@ namespace GenericProject.Core.Data.EntityFramework
                         .HasMany(u => u.Relations)
                         .WithMany(r => r.Peeps)
                         .Map(m => m.MapLeftKey("PeepId").MapRightKey("RelationId").ToTable("PeepRelations"));
+
+            modelBuilder.Entity<Peep>()
+                        .HasMany(u => u.Tags)
+                        .WithMany(r => r.Peeps)
+                        .Map(m => m.MapLeftKey("PeepId").MapRightKey("TagId").ToTable("PeepTags"));
         }
 
         public override int SaveChanges()
