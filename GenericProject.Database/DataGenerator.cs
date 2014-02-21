@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using GenericProject.Core.Data;
 using GenericProject.Core.Model;
 using Newtonsoft.Json;
@@ -203,7 +207,8 @@ namespace GenericProject.Database
         }
 
 
-        private IEnumerable<string> LoadCities() { 
+        private IEnumerable<string> LoadCities()
+        {
             return _cities ?? (_cities = new List<string>() { 
                                                               "Estonia", 
                                                               "Suburbia", 
@@ -211,7 +216,7 @@ namespace GenericProject.Database
                                                               "100 Acre Woods", 
                                                               "Hyrle", 
                                                               "South Figaro", 
-                                                              "Zozo" }); 
+                                                              "Zozo" });
         }
 
 
@@ -236,7 +241,17 @@ namespace GenericProject.Database
 
             if (_peeps != null) return _peeps;
 
-            var json = System.IO.File.ReadAllText(@"C:\SRC\GenericProject\GenericProject.Database\fakePeeps.json");
+            var json = string.Empty;
+
+            var ass = typeof (DataGenerator).Assembly;
+            using (var stream = ass.GetManifestResourceStream("GenericProject.Database.fakePeeps.json"))
+            {
+                using (var sr = new StreamReader(stream))
+                {
+                    json = sr.ReadToEnd();
+                }
+            }
+
             _peeps = JsonConvert.DeserializeObject<List<Peep>>(json);
 
             // just for fun, some randomness
@@ -263,15 +278,16 @@ namespace GenericProject.Database
                                        x.Addresses = new Collection<Address>();
                                        for (var i = 1; i <= randCount; i++)
                                        {
-                                           x.Addresses.Add(new Address() {
-                                                                             Line1 = String.Format("{0} {1}", rand.Next(100, 5000), _streets.SelectRandom()),
-                                                                             Line2 =
-                                                                                 (rand.Next(1, 100) % 3 == 0) ? "" : String.Format("Apt. {0}", rand.Next(1, 23)),
-                                                                             City = _cities.SelectRandom(),
-                                                                             AddressType = _addressTypes.SelectRandom(),
-                                                                             State = _states.SelectRandom(),
-                                                                             ZipCode = String.Format("{0}", rand.Next(11111, 99999))
-                                                                         });
+                                           x.Addresses.Add(new Address()
+                                           {
+                                               Line1 = String.Format("{0} {1}", rand.Next(100, 5000), _streets.SelectRandom()),
+                                               Line2 =
+                                                   (rand.Next(1, 100) % 3 == 0) ? "" : String.Format("Apt. {0}", rand.Next(1, 23)),
+                                               City = _cities.SelectRandom(),
+                                               AddressType = _addressTypes.SelectRandom(),
+                                               State = _states.SelectRandom(),
+                                               ZipCode = String.Format("{0}", rand.Next(11111, 99999))
+                                           });
                                        }
                                    }
                                });

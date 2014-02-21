@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="fakePeeps.json" />
+    <EmbeddedResource Include="fakePeeps.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
