@@ -1,4 +1,4 @@
-﻿var GenericObject = Base.extend({
+var GenericObject = Base.extend({
   constructor: function(name) {
     this.name = name;
   },

@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 // TODO: A better directive name than 'gen-order-by'
 angular.module('GenericApp')
@@ -42,7 +42,7 @@ angular.module('GenericApp')
                       scope.genOrderBy = attrs.genName;
                       var direction = ascending(scope.$parent) ? 'ASC' : 'DESC';
                       orderByExpr.assign(scope.$parent, scope.genOrderBy + ' ' + direction);
-                  })
+                  });
               });
           }
       };

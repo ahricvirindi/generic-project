@@ -1,6 +1,7 @@
 <pre>{{PaginationState.PaginationRequest}}</pre>
 <div ng-form>
-    <input type="search" ng-model="PeepFilter.Search" />|<select ng-model="PeepFilter.ZipCode" ng-options="p.ZipCode as p.ZipCode for p in ZipCodes">
+    <input type="search" ng-model="PeepFilter.Search" />|
+    <select ng-model="PeepFilter.ZipCode" ng-options="p.ZipCode as p.ZipCode for p in ZipCodes">
         <option value=""></option>
     </select>
     |
@@ -12,47 +13,47 @@
 <br />
 
 <div class="panel panel-default">
-<div class="panel-heading">Panel heading</div>
-<table class="table-hover table table-bordered table-striped table-condensed">
-    <thead>
-        <tr>
-            <th gen-order-by="OrderBy" gen-name="Id">Id</th>
-            <th gen-order-by="OrderBy" gen-name="Name">Name</th>
-            <th gen-order-by="OrderBy" gen-name="Email">Email</th>
-            <th gen-order-by="OrderBy" gen-name="Birthday">Birthday</th>
-            <th gen-order-by="OrderBy" gen-name="HatsOwned">Fancy Hats Owned</th>
-            <th gen-order-by="OrderBy" gen-name="ZipCode">Zip</th>
-            <th gen-order-by="OrderBy" gen-name="Note">Note</th>
-        </tr>
-        <tr ng-show="PaginationState.Items.length == 0 && !Busy()">
-            <th colspan="5">No results found...</th>
-        </tr>
-        <tr ng-show="Busy()">
-            <th colspan="5">
-                <div class="overlay">
-                    <div spin spin-opts="spin" spin-when="Busy()"></div>
-                </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody ng-show="!Busy()">
-        <tr ng-repeat="p in PaginationState.Items">
-            <td>{{p.Id}}</td>
-            <td>{{p.Name}}</td>
-            <td>{{p.Email}}</td>
-            <td>{{p.Birthday}}</td>
-            <td>{{p.HatsOwned}}</td>
-            <td>{{p.ZipCode}}</td>
-            <td>{{p.Note}}</td>
-        </tr>
-    </tbody>
-</table>
+    <div class="panel-heading">Panel heading</div>
+    <table class="table-hover table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th gen-order-by="OrderBy" gen-name="Id">Id</th>
+                <th gen-order-by="OrderBy" gen-name="Name">Name</th>
+                <th gen-order-by="OrderBy" gen-name="Email">Email</th>
+                <th gen-order-by="OrderBy" gen-name="Birthday">Birthday</th>
+                <th gen-order-by="OrderBy" gen-name="HatsOwned">Fancy Hats Owned</th>
+                <th gen-order-by="OrderBy" gen-name="ZipCode">Zip</th>
+                <th gen-order-by="OrderBy" gen-name="Note">Note</th>
+            </tr>
+            <tr ng-show="PaginationState.Items.length == 0 && !Busy()">
+                <th colspan="5">No results found...</th>
+            </tr>
+            <tr ng-show="Busy()">
+                <th colspan="5">
+                    <div class="overlay">
+                        <div spin spin-opts="spin" spin-when="Busy()"></div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody ng-show="!Busy()">
+            <tr ng-repeat="p in PaginationState.Items">
+                <td>{{p.Id}}</td>
+                <td>{{p.Name}}</td>
+                <td>{{p.Email}}</td>
+                <td>{{p.Birthday}}</td>
+                <td>{{p.HatsOwned}}</td>
+                <td>{{p.ZipCode}}</td>
+                <td>{{p.Note}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div>
-    <div pagination total-items="PaginationState.TotalCount" 
-                page="PaginationState.PaginationRequest.PageNumber" 
-                items-per-page="PaginationState.PageSize" max-size="5" 
-                class="pagination-sm" boundary-links="true" on-select-page="gotoPage(page)">
+    <div pagination total-items="PaginationState.TotalCount"
+         page="PaginationState.PaginationRequest.PageNumber"
+         items-per-page="PaginationState.PageSize" max-size="5" class="pagination-sm"
+         boundary-links="true" on-select-page="gotoPage(page)">
     </div>
 </div>

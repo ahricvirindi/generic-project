@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 /* Services */
 
 var module = angular.module('GenericApp');
@@ -15,7 +15,7 @@ module.factory('Api', ['$resource', 'notificationService', function ($resource, 
     };
 
     var Api = $resource(url, defaults, actions);
-    
+
     Api.Busy = false;
     Api.isBusy = function () {
         return Api.Busy;
@@ -26,8 +26,8 @@ module.factory('Api', ['$resource', 'notificationService', function ($resource, 
     };
 
     Api.prototype.onError = function () {
-      notify.error('Error communicating with server.');
-      Api.Busy = false;
+        notify.error('Error communicating with server.');
+        Api.Busy = false;
     };
 
     Api.prototype.onSuccess = function (results) {
