@@ -1,0 +1,54 @@
+﻿<form name="editPeep" class="form-horizontal" role="form" ng-submit="save(peep)">
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="Email" name="Email" ng-model="peep.Email" placeholder="Email">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="Name" id="Name" ng-model="peep.Name" placeholder="Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Note" class="col-sm-2 control-label">Note</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="Note" id="Note" ng-model="peep.Note" placeholder="Note">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="HatsOwned" class="col-sm-2 control-label">Hats Owned</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" name="HatsOwned" id="HatsOwned" ng-model="peep.HatsOwned" placeholder="HatsOwned">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Birthday" class="col-sm-2 control-label">Birthday</label>
+        <div class="col-sm-10">
+            <input type="date" class="form-control" name="Birthday" id="Birthday" ng-model="peep.Birthday" placeholder="Birthday">
+        </div>
+    </div><div class="form-group">
+              <label for="Title" class="col-sm-2 control-label">Title</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" name="Title" id="Title" ng-model="peep.Title" placeholder="Title">
+              </div>
+          </div>
+    <div class="form-group">
+        <label for="Address" class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-10">
+            <input type="address" class="form-control" name="Address" id="Address" ng-model="peep.Address" placeholder="Address">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="ZipCode" class="col-sm-2 control-label">Zip Code</label>
+        <div class="col-sm-10">
+            <input type="zipcode" class="form-control" name="ZipCode" id="ZipCode" ng-model="peep.ZipCode" placeholder="ZipCode">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+</form>

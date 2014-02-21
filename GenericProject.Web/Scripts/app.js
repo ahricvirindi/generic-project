@@ -7,10 +7,11 @@ angular.module('GenericApp', [
   'ngRoute',
   'ui.utils',
   'ui.notify',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'spin'
 ])
-    .config(['$routeProvider', '$locationProvider', 'notificationServiceProvider',
-        function ($routeProvider, $locationProvider, notificationServiceProvider) {
+    .config(['$routeProvider', '$locationProvider', 'notificationServiceProvider', 'spinProvider',
+        function ($routeProvider, $locationProvider, notificationServiceProvider, spinProvider) {
             notificationServiceProvider.setDefaults({
                 history: false,
                 delay: 5000,
@@ -30,9 +31,13 @@ angular.module('GenericApp', [
                     controller: 'MainController'
                 })
                 .when('/peeps', {
-                    templateUrl: '/Scripts/views/peeps.html',
+                    templateUrl: '/Scripts/views/peeps/index.html',
                     controller: 'PeepsController',
                     reloadOnSearch: false
+                })
+                .when('/peeps/edit/:id', {
+                    templateUrl: '/Scripts/views/peeps/edit.html',
+                    controller: 'PeepsEditController'
                 })
                 .when('/style', {
                     templateUrl: '/Scripts/views/style.html',
@@ -41,6 +46,18 @@ angular.module('GenericApp', [
                 .otherwise({
                     redirectTo: '/'
                 });
-            
+
             $locationProvider.html5Mode(true);
+
+            spinProvider.options = {
+                radius: 150,
+                hwaccel: true,
+                length: 20,
+                width: 10,
+                color: '#3388DD',
+                shadow: true,
+                className: 'spinner',
+                top: 'auto',
+                left: 'auto'
+            };
   }]);

@@ -1,4 +1,6 @@
-<pre>{{PaginationState.PaginationRequest}}</pre>
+<pre>{{PeepFilter}}</pre>
+<pre>{{CurrentPage}}</pre>
+<pre>{{OrderBy}}</pre>
 <div ng-form>
     <input type="search" ng-model="PeepFilter.Search" />|
     <select ng-model="PeepFilter.ZipCode" ng-options="p.ZipCode as p.ZipCode for p in ZipCodes">
@@ -17,13 +19,13 @@
     <table class="table-hover table table-bordered table-striped table-condensed">
         <thead>
             <tr>
-                <th gen-order-by="OrderBy" gen-name="Id">Id</th>
-                <th gen-order-by="OrderBy" gen-name="Name">Name</th>
-                <th gen-order-by="OrderBy" gen-name="Email">Email</th>
-                <th gen-order-by="OrderBy" gen-name="Birthday">Birthday</th>
-                <th gen-order-by="OrderBy" gen-name="HatsOwned">Fancy Hats Owned</th>
-                <th gen-order-by="OrderBy" gen-name="ZipCode">Zip</th>
-                <th gen-order-by="OrderBy" gen-name="Note">Note</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="Id">Id</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="Name">Name</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="Email">Email</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="Birthday">Birthday</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="HatsOwned">Fancy Hats Owned</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="ZipCode">Zip</th>
+                <th gen-order-by="PeepFilter.OrderBy" gen-name="Note">Note</th>
             </tr>
             <tr ng-show="PaginationState.Items.length == 0 && !Busy()">
                 <th colspan="5">No results found...</th>
@@ -37,7 +39,7 @@
             </tr>
         </thead>
         <tbody ng-show="!Busy()">
-            <tr ng-repeat="p in PaginationState.Items">
+            <tr ng-repeat="p in PaginationState.Items" ng-click="edit(p.Id)">
                 <td>{{p.Id}}</td>
                 <td>{{p.Name}}</td>
                 <td>{{p.Email}}</td>

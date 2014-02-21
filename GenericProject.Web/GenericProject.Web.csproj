@@ -211,6 +211,7 @@
     <Content Include="Content\less\main.min.css">
       <DependentUpon>main.less</DependentUpon>
     </Content>
+    <Content Include="Scripts\controllers\PeepsEditController.js" />
     <Content Include="Scripts\controllers\StyleController.js" />
     <Content Include="Scripts\directives\OrderByDirective.js" />
     <Content Include="Scripts\directives\SpinDirective.js" />
@@ -1644,6 +1645,9 @@
     <Content Include="Scripts\lib\spinjs\LICENSE.txt" />
     <Content Include="Scripts\lib\spinjs\spin.js" />
     <Content Include="Scripts\services\ApiService.js" />
+    <Content Include="Scripts\services\NotifyService.js" />
+    <Content Include="Scripts\services\SpinService.js" />
+    <Content Include="Scripts\views\peeps\edit.html" />
     <Content Include="Scripts\views\style.html" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="ViewModels\IMappableViewModel.cs" />
@@ -1895,7 +1899,7 @@
     <Content Include="Scripts\models\Base.js" />
     <Content Include="Scripts\models\Config.js" />
     <Content Include="Scripts\models\GenericObject.js" />
-    <Content Include="Scripts\views\peeps.html" />
+    <Content Include="Scripts\views\peeps\index.html" />
     <Content Include="Scripts\views\main.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

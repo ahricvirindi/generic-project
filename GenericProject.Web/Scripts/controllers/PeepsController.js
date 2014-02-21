@@ -3,7 +3,15 @@
 angular.module('GenericApp')
     .controller('PeepsController', ['$scope', 'Api', '$routeParams', '$location', '$log',
         function ($scope, Api, $routeParams, $location, $log) {
-            $scope.CurrentPage = $routeParams.page;
+            $scope.Busy = Api.isBusy;
+
+            $scope.PeepFilter = {
+                Search: $routeParams.Search || '',
+                ZipCode: $routeParams.ZipCode || '',
+                OrderBy: $routeParams.OrderBy || '',
+                CurrentPage: $routeParams.CurrentPage || 1
+            };
+
             $scope.PaginationState = {
                 Items: [],
                 PaginationRequest: {
@@ -17,12 +25,6 @@ angular.module('GenericApp')
                 PageSize: 20
             };
 
-            $scope.PeepFilter = { Search: $routeParams.search, ZipCode: $routeParams.zipCode };
-            $scope.OrderBy = $routeParams.orderBy;
-            $scope.Ascending = ($scope.OrderBy || '').match(/ASC/);
-
-            $log.info($routeParams);
-
             var buildPaginationRequest = function () {
                 var req = {
                     'FilterArgs[0].Key': 'Search',
@@ -30,62 +32,43 @@ angular.module('GenericApp')
                     'FilterArgs[1].Key': 'ZipCode',
                     'FilterArgs[1].Value': $scope.PeepFilter.ZipCode,
                     PageSize: 5,
-                    PageNumber: $scope.CurrentPage,
-                    OrderBy: $scope.OrderBy
+                    PageNumber: $scope.PeepFilter.CurrentPage,
+                    OrderBy: $scope.PeepFilter.OrderBy
                 };
                 return req;
             };
 
             $scope.gotoPage = function (newPage) {
-                $scope.CurrentPage = newPage || 1;
+                $scope.PeepFilter.CurrentPage = newPage || 1;
+            };
+
+            $scope.edit = function (id) {
+                $location.url('peeps/edit/' + id);
             };
 
             $scope.resetFilter = function () {
                 $scope.PeepFilter.Search = '';
                 $scope.PeepFilter.ZipCode = '';
-                $scope.refreshData();
             };
 
             $scope.refreshData = function () {
-                $scope.PaginationState = api.paginate(buildPaginationRequest(), function (results) {
-                    $log.info(results);
-                }, function () { });
+                var params = buildPaginationRequest();
+                angular.extend(params, { service: 'peeps' });
+                $scope.PaginationState = Api.paginate(params);
+                $log.info($scope.PaginationState);
             };
 
-            $scope.$watch('CurrentPage',
-            function (newValue, oldValue) {
-                if (!newValue || newValue === oldValue) return;
-                $location.search('page', $scope.CurrentPage);
+            $scope.$watch('PeepFilter', function (val) {
+                var searchParams = angular.extend($location.$$search, val);
+                $location.search(searchParams);
+            }, true);
+
+            $scope.$watch(function() {
+                return $location.$$search;
+            }, function (val) {
+                $scope.PeepFilter = angular.extend($scope.PeepFilter, val);
+                $scope.Ascending = ($scope.PeepFilter.OrderBy || '').match(/ASC/);
                 $scope.refreshData();
             }, true);
 
-
-            $scope.$watch('OrderBy',
-            function (newValue, oldValue) {
-                if (!newValue || newValue === oldValue) {
-                    return;
-                }
-                $log.info(newValue, oldValue);
-                $location.search('orderBy', $scope.OrderBy);
-                $scope.refreshData();
-            }, true);
-
-
-            var api = new Api({ service: 'Peeps' });
-
-            $scope.Busy = Api.isBusy;
-
-            $scope.spin = {
-                radius: 150,
-                hwaccel: true,
-                length: 20,
-                width: 10,
-                color: '#3388DD',
-                shadow: true,
-                className: 'spinner',
-                top: 'auto',
-                left: 'auto'
-            };
-
-            $scope.refreshData();
         }]);

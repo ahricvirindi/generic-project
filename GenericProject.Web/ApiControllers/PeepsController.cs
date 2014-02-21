@@ -16,5 +16,11 @@ namespace GenericProject.Web.ApiControllers
         {
             return _peepService.GetPeeps(paginationRequest);
         }
+
+        public Peep Get(long id)
+        {
+            return _peepService.GetPeep(id);
+        }
+
     }
 }

@@ -6,7 +6,7 @@ namespace GenericProject.Web
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-           #region Script bundles
+            #region Script bundles
 
             bundles.Add(new ScriptBundle("~/Scripts/app-lib-js").Include(
                 "~/Scripts/lib/jquery/jquery.js",
@@ -35,12 +35,15 @@ namespace GenericProject.Web
             bundles.Add(new ScriptBundle("~/Scripts/app-controllers-js").Include(
                 "~/Scripts/controllers/MainController.js",
                 "~/Scripts/controllers/PeepsController.js",
+                "~/Scripts/controllers/PeepsEditController.js",
                 "~/Scripts/controllers/StyleController.js"
                 ));
 
 
             bundles.Add(new ScriptBundle("~/Scripts/app-services-js").Include(
-                "~/Scripts/services/ApiService.js"
+                "~/Scripts/services/SpinService.js",
+                "~/Scripts/services/ApiService.js",
+                "~/Scripts/services/NotifyService.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/Scripts/app-directives-js").Include(
@@ -65,6 +68,6 @@ namespace GenericProject.Web
                 ));
         }
 
-        #endregion
+            #endregion
     }
 }

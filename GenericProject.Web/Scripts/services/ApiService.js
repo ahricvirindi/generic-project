@@ -3,45 +3,31 @@
 
 var module = angular.module('GenericApp');
 
-module.factory('Api', ['$resource', 'notificationService', function ($resource, notify) {
+module.factory('Api', ['$resource', 'Notify', function ($resource, notify) {
     var url = '/api/:service';
     var defaults = {};
-    var actions = {
-        update: { method: 'PUT' },
-        paginate: {
-            method: 'GET',
-            isArray: false
-        }
-    };
+    var actions = {};
+    var busy = false;
 
     var Api = $resource(url, defaults, actions);
 
-    Api.Busy = false;
     Api.isBusy = function () {
-        return Api.Busy;
+        return busy;
     };
 
-    Api.prototype.onBeforeQuery = function () {
-        notify.info('querying ' + this.service);
-    };
-
-    Api.prototype.onError = function () {
-        notify.error('Error communicating with server.');
-        Api.Busy = false;
-    };
-
-    Api.prototype.onSuccess = function (results) {
-        notify.info(this.service + ' loaded successfully');
-        Api.Busy = false;
-    };
-
-    Api.prototype.paginate = function (paginationArgs, successCallBack, errorCalLBack) {
-        Api.Busy = true;
-        this.onBeforeQuery();
-        var args = { service: this.service };
-        args = angular.extend(args, paginationArgs);
-        var results = Api.paginate(args, this.onSuccess.bind(this), this.onError.bind(this));
-        results.$promise.then(successCallBack, errorCalLBack);
+    Api.paginate = function (params) {
+        notify.request(params);
+        busy = true;
+        var results = Api.get(params,
+            function (result) {
+                busy = false;
+                return notify.response(result, params);
+            },
+            function (error) {
+                busy = false;
+                return notify.error(error, params);
+            }
+        );
         return results;
     };
 
